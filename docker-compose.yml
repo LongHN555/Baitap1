@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # 1. Dịch vụ Nginx Web Server / Reverse Proxy
+  nginx:
+    image: nginx:latest
+    container_name: nginx_server
+    restart: always
+    ports:
+      - "8081:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./html/site1:/usr/share/nginx/html/site1
+      - ./html/site2:/usr/share/nginx/html/site2
+
+  # 2. Dịch vụ Node-RED (Lập trình luồng / IoT)
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered_app
+    restart: always
+    ports:
+      - "1880:1880"
+    volumes:
+      - nodered_data:/data
+
+  # 3. Dịch vụ MariaDB (Cơ sở dữ liệu)
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: {rootpassword}
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: userpassword
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  # 4. Dịch vụ phpMyAdmin (Giao diện quản lý MariaDB)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin_app
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: {rootpassword}
+
+  # 5. Dịch vụ Cloudflared (Xử lý Cloudflare Tunnel)
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared_tunnel
+    restart: always
+    command: tunnel --no-autoupdate run --token eyJhIjoiM2E2MWFiZGVmNGRhZWZhOTYxYzM1ZTdjNDk3MTY1MGIiLCJ0IjoiMjBiMTY4MWQtNjE5Yi00ZmFmLThmNjEtMjFkMGFhMjQyZTg1IiwicyI6Ik5EUTJaRFl6WmpRdFpHSmpZeTAwWm1GaExXRTBOemN0TUdGa09UQXdOREl6T1RReSJ9
+
+volumes:
+  nodered_data:
+  mariadb_data:
