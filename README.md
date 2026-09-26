@@ -28,11 +28,11 @@
 
 # Bài tập 2
 
-## Yêu cầu 1
-    - \\wsl.localhost\Ubuntu-24.04\home\longad\baitap1\web-docker\images\nodered.png
+### Yêu cầu 1
+![Node-RED Flow](images/nodered.png)
 
-## Yêu cầu 2
-    - \\wsl.localhost\Ubuntu-24.04\home\longad\baitap1\web-docker\images\API1.png
+### Yêu cầu 2
+![API Result 1](images/API1.png)
 
-## Yêu cầu 3
-    - \\wsl.localhost\Ubuntu-24.04\home\longad\baitap1\web-docker\images\goihtml.png
+### Yêu cầu 3
+![Goi HTML](images/goihtml.png)
