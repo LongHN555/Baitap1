@@ -30,7 +30,7 @@ services:
     container_name: mariadb_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: {rootpassword}
+      MYSQL_ROOT_PASSWORD: "${rootpassword}"
       MYSQL_DATABASE: mydatabase
       MYSQL_USER: myuser
       MYSQL_PASSWORD: userpassword
@@ -46,7 +46,7 @@ services:
       - "8080:80"
     environment:
       PMA_HOST: mariadb
-      MYSQL_ROOT_PASSWORD: {rootpassword}
+      MYSQL_ROOT_PASSWORD: "${rootpassword}"
 
   # 5. Dịch vụ Cloudflared (Xử lý Cloudflare Tunnel)
   cloudflared:

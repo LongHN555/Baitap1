@@ -1,6 +1,6 @@
 # Bài tập 1
 
-## 📝 Lịch sử Cập nhật 
+## Lịch sử Cập nhật 
 
 ### 22-09-2026
     - Đăng ký domain (xịn) trên web matbao
@@ -25,3 +25,14 @@
 - Code js  vào html để gọi được api trên
 - Thêm readme.md để báo cáo bài tập
 
+
+# Bài tập 2
+
+## Yêu cầu 1
+    - \\wsl.localhost\Ubuntu-24.04\home\longad\baitap1\web-docker\images\nodered.png
+
+## Yêu cầu 2
+    - \\wsl.localhost\Ubuntu-24.04\home\longad\baitap1\web-docker\images\API1.png
+
+## Yêu cầu 3
+    - \\wsl.localhost\Ubuntu-24.04\home\longad\baitap1\web-docker\images\goihtml.png

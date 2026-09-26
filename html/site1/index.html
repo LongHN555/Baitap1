@@ -3,63 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phát quà</title>
+    <title>Bài tập 2 - Gọi API Node-RED</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f172a;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .card {
-            background-color: #1e293b;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-
-        h2 { margin-bottom: 10px; color: #f8fafc; }
-        p { color: #94a3b8; margin-bottom: 30px; font-size: 14px; }
-
-        .btn {
-            display: inline-block;
-            background-color: #38bdf8;
-            color: #0f172a;
-            font-weight: bold;
-            font-size: 16px;
-            padding: 14px 28px;
-            border-radius: 30px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
-        }
-
-        .btn:hover {
-            background-color: #0ea5e9;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        ul { list-style-type: square; }
+        .success { color: green; font-weight: bold; }
     </style>
 </head>
 <body>
+    <h2>Danh sách sinh viên từ API Node-RED</h2>
+    <button onclick="fetchData()">Tải dữ liệu API</button>
+    
+    <p id="status"></p>
+    <ul id="student-list"></ul>
 
-    <div class="card">
-        <h2>Click to nhận quà</h2>
-        <p>Nhận quà nào!!</p>
-        
-        <!-- target="_blank" giúp mở tab mới -->
-        <a href="hehe1.mp4" target="_blank" class="btn">
-            =)))
-        </a>
-    </div>
+    <script>
+        function fetchData() {
+            // Gọi API bằng Fetch JS
+            fetch('/api/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok === 1) {
+                        document.getElementById('status').innerText = "Trạng thái: " + data.msg;
+                        document.getElementById('status').className = "success";
 
+                        let listElement = document.getElementById('student-list');
+                        listElement.innerHTML = ''; // Xóa danh sách cũ
+
+                        // Lặp qua mảng dssv và hiển thị lên giao diện
+                        data.dssv.forEach(sv => {
+                            let li = document.createElement('li');
+                            li.textContent = `Tên: ${sv.name} - Số tiền: ${sv.money}`;
+                            listElement.appendChild(li);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi gọi API:', error);
+                    document.getElementById('status').innerText = 'Lỗi kết nối API!';
+                });
+        }
+
+        // Tự động gọi API khi tải trang
+       // window.onload = fetchData;
+    </script>
 </body>
 </html>

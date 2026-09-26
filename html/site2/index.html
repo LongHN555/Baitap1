@@ -1,1 +1,103 @@
-<h1>Chào mừng đến với Website 2 (Domain 2)</h1>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website 2 - Thông Báo API</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+        h1 { color: #2c3e50; font-size: 24px; margin-bottom: 10px; }
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #27ae60;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .message-box {
+            background-color: #eef9f1;
+            border-left: 5px solid #27ae60;
+            padding: 15px;
+            font-size: 16px;
+            color: #333;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+        .btn-reload {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .btn-reload:hover { background-color: #2980b9; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>🌐 Website Cập Nhật Dữ Liệu 2</h1>
+        <div id="status" class="badge">Đang kết nối API...</div>
+
+        <!-- Nơi hiển thị thông báo trả về từ Node-RED -->
+        <div id="message" class="message-box">
+            Chờ dữ liệu...
+        </div>
+
+        <button class="btn-reload" onclick="callApiWeb2()">Gọi lại API</button>
+    </div>
+
+    <script>
+        function callApiWeb2() {
+            document.getElementById('status').innerText = 'Đang gọi API...';
+            
+            // Nginx sẽ proxy request /api/ sang Node-RED
+            fetch('/api/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok === 1) {
+                        document.getElementById('status').innerText = 'Trạng thái: Thành công';
+                        // Hiển thị nội dung msg từ Node-RED ("thành công đây là trang web thứ 2")
+                        document.getElementById('message').innerText = data.msg;
+                    } else {
+                        document.getElementById('status').innerText = 'Lỗi API';
+                        document.getElementById('message').innerText = 'Đã có lỗi xảy ra!';
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi gọi API:', error);
+                    document.getElementById('status').innerText = 'Lỗi kết nối';
+                    document.getElementById('message').innerText = 'Không thể kết nối đến API Node-RED!';
+                });
+        }
+
+        // Tự động gọi API khi tải trang
+        //window.onload = callApiWeb2;
+    </script>
+
+</body>
+</html>
