@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>AES Python Backend Tool</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f172a; color: white; padding: 20px; }
+        .box { max-width: 500px; margin: auto; background: #1e293b; padding: 20px; border-radius: 10px; }
+        input, textarea { width: 100%; padding: 8px; margin: 8px 0; background: #0f172a; color: white; border: 1px solid #334155; }
+        button { width: 48%; padding: 10px; cursor: pointer; border: none; font-weight: bold; }
+        .btn-enc { background: #0284c7; color: white; }
+        .btn-dec { background: #16a34a; color: white; }
+        .res { background: #0f172a; padding: 10px; margin-top: 10px; word-break: break-all; border-left: 3px solid #38bdf8; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h2>🔐 AES Tool (Python Backend)</h2>
+    <label>Khóa bí mật (Key):</label>
+    <input type="text" id="key" value="MySecretKey123">
+
+    <label>Nội dung (Plaintext / Ciphertext):</label>
+    <textarea id="text" placeholder="Nhập văn bản cần mã hóa hoặc HEX bản mã..."></textarea>
+
+    <label>IV (Hex) - Chỉ dùng khi Giải Mã:</label>
+    <input type="text" id="iv_input" placeholder="Dán mã IV hex khi giải mã tại đây...">
+
+    <div style="display: flex; justify-content: space-between;">
+        <button class="btn-enc" onclick="doEncrypt()">Mã hóa (Python)</button>
+        <button class="btn-dec" onclick="doDecrypt()">Giải mã (Python)</button>
+    </div>
+
+    <h4>Kết quả từ Python Server:</h4>
+    <div id="result" class="res">Chờ kết quả...</div>
+</div>
+
+<script>
+    async function doEncrypt() {
+        const key = document.getElementById('key').value;
+        const text = document.getElementById('text').value;
+
+        const res = await fetch('/api/encrypt', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ key, text })
+        });
+        const data = await res.json();
+        
+        if (data.ok) {
+            document.getElementById('result').innerHTML = 
+                `<b>Ciphertext (Hex):</b> ${data.ciphertext}<br><b>IV (Hex):</b> ${data.iv}`;
+            document.getElementById('iv_input').value = data.iv;
+        }
+    }
+
+    async function doDecrypt() {
+        const key = document.getElementById('key').value;
+        const ciphertext_hex = document.getElementById('text').value;
+        const iv_hex = document.getElementById('iv_input').value;
+
+        const res = await fetch('/api/decrypt', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ key, ciphertext_hex, iv_hex })
+        });
+        const data = await res.json();
+        
+        if (data.ok) {
+            document.getElementById('result').innerHTML = `<b>Văn bản gốc:</b> ${data.plaintext}`;
+        } else {
+            document.getElementById('result').innerHTML = `<span style="color:red">${data.msg}</span>`;
+        }
+    }
+</script>
+</body>
+</html>

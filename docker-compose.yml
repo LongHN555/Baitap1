@@ -13,6 +13,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./html/site1:/usr/share/nginx/html/site1
       - ./html/site2:/usr/share/nginx/html/site2
+      - ./html/site3:/usr/share/nginx/html/site3
 
   # 2. Dịch vụ Node-RED (Lập trình luồng / IoT)
   nodered:
@@ -55,6 +56,12 @@ services:
     restart: always
     command: tunnel --no-autoupdate run --token eyJhIjoiM2E2MWFiZGVmNGRhZWZhOTYxYzM1ZTdjNDk3MTY1MGIiLCJ0IjoiMjBiMTY4MWQtNjE5Yi00ZmFmLThmNjEtMjFkMGFhMjQyZTg1IiwicyI6Ik5EUTJaRFl6WmpRdFpHSmpZeTAwWm1GaExXRTBOemN0TUdGa09UQXdOREl6T1RReSJ9
 
+  py_backend:
+    build: ./AESBackend
+    container_name: py_crypto_app
+    restart: always
+    
 volumes:
   nodered_data:
   mariadb_data:
+
